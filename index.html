@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Выбери свою реальность — Family Trash / Боги и Баги</title>
+<style>
+  :root {
+    --void: #07080c;
+    --blue: #2f6bff;
+    --red:  #ff2f4a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--void); color: #fff;
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    overflow: hidden;
+  }
+  body {
+    background:
+      radial-gradient(circle at 50% 50%, #1a1d2e, transparent 70%),
+      linear-gradient(to bottom, rgba(0,0,0,.85), transparent 25%),
+      var(--void);
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem;
+  }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; }
+  .wrap { position: relative; z-index: 2; width: 100%; max-width: 1100px; text-align: center;
+          animation: entry 1.2s ease-out both; }
+  @keyframes entry { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  .kicker {
+    font-size: 10px; letter-spacing: .4em; text-transform: uppercase;
+    color: rgba(255,255,255,.3); margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4.8rem);
+    font-weight: 900; letter-spacing: -0.03em; line-height: .95;
+    margin: 0 0 5rem;
+  }
+  h1 .grad {
+    background: linear-gradient(90deg, #fff, rgba(255,255,255,.4), rgba(255,255,255,.85));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .pills {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6rem; flex-wrap: wrap;
+  }
+  .pill-col { display: flex; flex-direction: column; align-items: center; cursor: pointer;
+              text-decoration: none; color: inherit; transition: transform .5s; }
+  .pill-col:hover { transform: translateY(-4px); }
+  .pill {
+    position: relative; width: 200px; height: 84px; border-radius: 999px;
+    border: none; cursor: pointer; transition: transform .5s, filter .3s;
+    animation: float 6s ease-in-out infinite;
+  }
+  .pill::before {
+    content: ""; position: absolute; inset: 0; border-radius: 999px;
+    background: linear-gradient(45deg, rgba(255,255,255,.25), transparent 50%, rgba(0,0,0,.25));
+  }
+  .pill::after {
+    content: ""; position: absolute; top: 10px; left: 18px; width: 50px; height: 12px;
+    background: rgba(255,255,255,.3); border-radius: 999px; filter: blur(4px);
+  }
+  .pill.blue { background: var(--blue); box-shadow: 0 0 60px rgba(47,107,255,.5), 0 0 120px rgba(47,107,255,.3); }
+  .pill.red  { background: var(--red);  box-shadow: 0 0 60px rgba(255,47,74,.5),  0 0 120px rgba(255,47,74,.3); animation-delay: -2s; }
+  .pill-col:hover .pill { transform: scale(1.1); }
+  .pill-col:active .pill { transform: scale(.95); filter: brightness(1.5); }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .title { margin-top: 2rem; font-size: 1.5rem; font-weight: 900; letter-spacing: -.02em; }
+  .title.red { font-style: italic; text-transform: uppercase; }
+  .pill-col:hover .title.blue { color: var(--blue); }
+  .pill-col:hover .title.red  { color: var(--red); }
+  .sub { font-size: 11px; text-transform: uppercase; letter-spacing: .15em; color: rgba(255,255,255,.4); margin-top: .5rem; }
+  .divider { width: 1px; height: 100px; background: rgba(255,255,255,.1); }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 600px) {
+    html, body { overflow: auto; height: auto; min-height: 100%; }
+    body { padding: 1.5rem 1rem; align-items: flex-start; }
+
+    .wrap { padding-bottom: 5rem; }
+
+    h1 {
+      font-size: clamp(2rem, 10vw, 3rem);
+      margin: 0 0 3rem;
+    }
+
+    .pills {
+      flex-direction: row;          /* горизонтально рядом */
+      align-items: stretch;
+      justify-content: center;
+      gap: 0;                       /* убираем gap — разделитель заменяет */
+      flex-wrap: nowrap;
+    }
+
+    /* Каждый столбец занимает ровно половину */
+    .pill-col {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 0 0.5rem;
+      justify-content: flex-start;
+    }
+
+    .pill {
+      width: 100%;                  /* растягивается на ширину колонки */
+      max-width: 140px;
+      height: 58px;
+    }
+
+    .divider {
+      width: 1px;
+      height: auto;
+      align-self: stretch;
+      background: rgba(255,255,255,.12);
+      flex-shrink: 0;
+      margin: 0;
+    }
+
+    .title { font-size: 1rem; margin-top: 1.2rem; }
+    .sub   { font-size: 9px; letter-spacing: .1em; margin-top: .3rem; }
+  }
+
+  /* ─── TABLET (средний диапазон) ─── */
+  @media (min-width: 601px) and (max-width: 720px) {
+    .divider { width: 60px; height: 1px; }
+    .pills { gap: 3rem; }
+  }
+
+  .meta {
+    position: fixed; bottom: 2rem; left: 0; right: 0; padding: 0 2rem;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    opacity: .25; font-size: 10px; letter-spacing: .2em;
+  }
+  @media (max-width: 600px) {
+    .meta { font-size: 8px; padding: 0 1rem; bottom: 1rem; }
+    .meta > div:last-child { max-width: 140px; }
+  }
+  .scanlines {
+    pointer-events: none; position: fixed; inset: 0; z-index: 10; opacity: .5;
+    background-image:
+      linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,.1) 50%),
+      linear-gradient(90deg, rgba(255,0,0,.02), rgba(0,255,0,.01), rgba(0,0,255,.02));
+    background-size: 100% 4px, 3px 100%;
+  }
+  .flash {
+    position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0;
+  }
+  .flash.go { animation: flash .35s ease-out forwards; }
+  .flash.blue { background: var(--blue); }
+  .flash.red  { background: var(--red); }
+  @keyframes flash { from { opacity: 0; } 50% { opacity: 1; } to { opacity: 1; } }
+
+  /* ─── ARCHITECT BUTTON ─── */
+  .architect-btn {
+    position: fixed; bottom: 6.5rem; left: 50%; transform: translateX(-50%);
+    z-index: 20;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.55);
+    color: #fff;
+    font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+    font-size: 10px; letter-spacing: .35em; text-transform: uppercase;
+    padding: .55rem 1.6rem; border-radius: 999px; cursor: pointer;
+    box-shadow: 0 0 14px rgba(255,255,255,.18), 0 0 40px rgba(255,255,255,.08), inset 0 1px 0 rgba(255,255,255,.2);
+    animation: archPulse 3s ease-in-out infinite;
+    transition: box-shadow .3s, background .3s;
+    white-space: nowrap;
+  }
+  @keyframes archPulse {
+    0%,100% { box-shadow: 0 0 14px rgba(255,255,255,.18), 0 0 40px rgba(255,255,255,.08), inset 0 1px 0 rgba(255,255,255,.2); }
+    50%      { box-shadow: 0 0 22px rgba(255,255,255,.38), 0 0 60px rgba(255,255,255,.15), inset 0 1px 0 rgba(255,255,255,.25); }
+  }
+  .architect-btn:hover {
+    background: rgba(255,255,255,.14);
+    box-shadow: 0 0 28px rgba(255,255,255,.5), 0 0 70px rgba(255,255,255,.2), inset 0 1px 0 rgba(255,255,255,.3);
+  }
+
+  /* ─── ARCHITECT MODAL ─── */
+  .arch-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(7,8,12,.85); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s;
+  }
+  .arch-overlay.open { opacity: 1; pointer-events: auto; }
+  .arch-card {
+    position: relative; max-width: 480px; width: 100%;
+    border: 1px solid rgba(255,255,255,.12);
+    background: linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    border-radius: 16px; padding: 2.5rem 2rem 2rem;
+    transform: translateY(16px);
+    transition: transform .35s;
+    text-align: left;
+  }
+  .arch-overlay.open .arch-card { transform: translateY(0); }
+  .arch-label {
+    font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+    font-size: 9px; letter-spacing: .35em; text-transform: uppercase;
+    color: rgba(255,255,255,.3); margin-bottom: 1.2rem;
+  }
+  .arch-text {
+    font-size: 1rem; line-height: 1.7; color: rgba(255,255,255,.82);
+    font-weight: 400;
+  }
+  .arch-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none; color: rgba(255,255,255,.3);
+    font-size: 18px; cursor: pointer; line-height: 1;
+    transition: color .2s;
+    padding: 4px 8px;
+  }
+  .arch-close:hover { color: rgba(255,255,255,.7); }
+  .arch-chips {
+    display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.2rem 0 1.4rem;
+  }
+  .arch-chip {
+    font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+    font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+    padding: .3rem .75rem; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.22); color: rgba(255,255,255,.7);
+    background: rgba(255,255,255,.06);
+  }
+  .arch-tg {
+    display: inline-flex; align-items: center; gap: .45rem; margin-top: 1.4rem;
+    color: #54a9e8; text-decoration: none; font-size: .9rem; font-weight: 600;
+    transition: color .2s;
+  }
+  .arch-tg:hover { color: #7ec3f5; }
+  .arch-tg svg { flex-shrink: 0; }
+
+  /* ─── HR BUTTON ─── */
+  .arch-card-footer {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-top: 1.4rem; flex-wrap: wrap; gap: .8rem;
+  }
+  .arch-hr-btn {
+    font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+    font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+    padding: .45rem 1.1rem; border-radius: 999px; cursor: pointer;
+    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.55);
+    transition: background .2s, color .2s, border-color .2s;
+    white-space: nowrap;
+  }
+  .arch-hr-btn:hover {
+    background: rgba(255,255,255,.13);
+    border-color: rgba(255,255,255,.45);
+    color: rgba(255,255,255,.9);
+  }
+
+  @media (max-width: 600px) {
+    .architect-btn { bottom: 5.5rem; font-size: 9px; letter-spacing: .25em; }
+    .arch-card { padding: 2rem 1.4rem 1.6rem; }
+    .arch-text { font-size: .93rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker mono">System Initialization / Ready State</div>
+    <h1>ВЫБЕРИ СВОЮ <span class="grad">РЕАЛЬНОСТЬ</span></h1>
+    <div class="pills">
+      <a class="pill-col" href="family-trash.html" data-color="blue">
+        <div class="pill blue"></div>
+        <div class="title blue">FAMILY TRASH</div>
+        <div class="sub mono">Семейный чат-симулятор</div>
+      </a>
+      <div class="divider"></div>
+      <a class="pill-col" href="gods-and-bugs.html" data-color="red">
+        <div class="pill red"></div>
+        <div class="title red">Боги и Баги</div>
+        <div class="sub mono">Ретро-квиз: Греческий IT пантеон</div>
+      </a>
+    </div>
+  </div>
+  <div class="meta mono">
+    <div>
+      <div>COORD: 55.7558 N / 37.6173 E</div>
+      <div id="clock">TIME: --:--:--</div>
+      <div id="played" style="margin-top:.35rem;opacity:.8">PLAYED: FT: — · GnB: — · TOTAL: —</div>
+    </div>
+    <div style="max-width:280px;text-align:right">ОЖИДАНИЕ ВВОДА ПОЛЬЗОВАТЕЛЯ. ВЫБОР НЕОБРАТИМ.</div>
+  </div>
+  <button class="architect-btn mono" onclick="openArch()">АРХИТЕКТОР</button>
+
+  <div class="arch-overlay" id="archOverlay" onclick="closeArch(event)">
+    <div class="arch-card">
+      <button class="arch-close" onclick="closeArchBtn()">✕</button>
+      <div class="arch-label mono">// об авторе</div>
+      <p class="arch-text">Привет) Я Егор — и, пожалуй, единственный юрист на CodeFest, потому что у вас классно!<br><br>Люблю здравый смысл, пишу понятные документы, раскладываю риски по полочкам. Не люблю канцелярит и подход «мы всегда так делали», особенно когда это единственный аргумент.</p>
+      <div class="arch-chips">
+        <span class="arch-chip">опыт &gt;3 лет</span>
+        <span class="arch-chip">перс. данные</span>
+        <span class="arch-chip">IT</span>
+        <span class="arch-chip">IP</span>
+      </div>
+      <div class="arch-card-footer">
+        <a class="arch-tg" href="https://t.me/lawegor" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#54a9e8"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          @lawegor
+        </a>
+        <a class="arch-hr-btn mono" href="https://disk.yandex.ru/i/f0on8MVhPwiScQ" target="_blank" rel="noopener">кнопка для эйчаров</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="scanlines"></div>
+  <div id="flash" class="flash"></div>
+<script>
+  const pad = n => String(n).padStart(2,'0');
+  const clock = document.getElementById('clock');
+  setInterval(() => {
+    const d = new Date();
+    clock.textContent = `TIME: ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }, 1000);
+
+  function openArch() { document.getElementById('archOverlay').classList.add('open'); }
+  function closeArchBtn() { document.getElementById('archOverlay').classList.remove('open'); }
+  function closeArch(e) { if (e.target === e.currentTarget) closeArchBtn(); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeArchBtn(); });
+
+  // ─── COUNTER ───
+  const API = 'https://api.counterapi.dev/v2/dionis-codefest';
+  const API_HEADERS = { 'Authorization': 'Bearer ut_AJM5jyZJ7yesDrlSKyTBIMtRcIP0XQQjtSAtHxkT' };
+  const playedEl = document.getElementById('played');
+  let counts = { ft: 0, gnb: 0 };
+
+  function renderPlayed() {
+    const total = counts.ft + counts.gnb;
+    playedEl.textContent = `PLAYED: FT: ${counts.ft} · GnB: ${counts.gnb} · TOTAL: ${total}`;
+  }
+
+  async function loadCounts() {
+    try {
+      const [ft, gnb] = await Promise.all([
+        fetch(`${API}/family-trash`, { headers: API_HEADERS }).then(r => r.json()),
+        fetch(`${API}/gods-and-bugs`, { headers: API_HEADERS }).then(r => r.json())
+      ]);
+      counts.ft  = ft.count  ?? ft.value  ?? 0;
+      counts.gnb = gnb.count ?? gnb.value ?? 0;
+      renderPlayed();
+    } catch(e) { /* API недоступен — показываем прочерки */ }
+  }
+
+  async function increment(key) {
+    try {
+      const r = await fetch(`${API}/${key}/up`, { keepalive: true, headers: API_HEADERS }).then(r => r.json());
+      return r.count ?? r.value ?? 0;
+    } catch(e) { return null; }
+  }
+
+  loadCounts();
+
+  const flash = document.getElementById('flash');
+  document.querySelectorAll('.pill-col').forEach(el => {
+    el.addEventListener('click', async e => {
+      e.preventDefault();
+      const color = el.dataset.color;
+      const href  = el.getAttribute('href');
+      const key   = color === 'blue' ? 'family-trash' : 'gods-and-bugs';
+      flash.className = `flash go ${color}`;
+      // increment counter и обновить дисплей (не ждём — идём вперёд)
+      increment(key).then(v => {
+        if (v !== null) {
+          if (key === 'family-trash') counts.ft = v;
+          else counts.gnb = v;
+          renderPlayed();
+        }
+      });
+      setTimeout(() => { window.location.href = href; }, 350);
+    });
+  });
+</script>
+</body>
+</html>
